@@ -1,15 +1,13 @@
-#include "main.h"
+#include "0-putchar.h"
 
 /**
- * main - prints _putchar
- *
- * Description: prints _putchar
- *
- * Return: 0 (Success)
+ * main - main function
+ * Return: 0
  */
 
 int main(void)
 {
+
 	char text[9] = "_putchar";
 	int i = 0;
 
@@ -18,6 +16,5 @@ int main(void)
 		_putchar(text[i]);
 	}
 	_putchar('\n');
-
 	return (0);
 }
