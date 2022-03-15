@@ -6,7 +6,7 @@
  */
 int main(void)
 {
-	char *sh = "School";
+	char *sh = "Main";
 
 	while (*sh)
 	{
