@@ -1,32 +1,34 @@
 #include "main.h"
 #include <stdio.h>
-
 /**
- * print_to_98 - print_to_98 function
- *
- * Description: the print_to_98 function
- * puts text to stout.
- * @n: int n
- * Return: void
+ * print_to_98 - Print all natural numbers from n to 98
+ * @n: int type number
  */
-
 void print_to_98(int n)
 {
-	int i;
-
-	if (n < 98)
+	if (n > 98)
 	{
-		for (i = n; i < 98; i++)
+		while (n >= 98)
 		{
-			printf("%d, ", i);
+			printf("%d", n);
+			if (n != 98)
+			{
+				printf(", ");
+			}
+			n--;
 		}
-	} else
-	{
-		for (i = n; i > 98; i--)
-		{
-			printf("%d, ", i);
-		}
-
 	}
-	printf("%d\n", 98);
+	else
+	{
+		while (n <= 98)
+		{
+			printf("%d", n);
+			if (n != 98)
+			{
+				printf(", ");
+			}
+			n++;
+		}
+	}
+	printf("\n");
 }
