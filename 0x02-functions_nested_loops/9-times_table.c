@@ -1,43 +1,44 @@
 #include "main.h"
-#include <stdlib.h>
 /**
- * times_table - times_table function
- *
- * Description: the times_table function
- * puts text to stout.
- * Return: void
+ * times_table - Print the 9 times table, starting with 0
+ * Return: 0
  */
-
 void times_table(void)
 {
-	int x, y, z, tens, ones;
+	int x = 0; /* factor */
+	int y; /* count  */
+	int z; /* computed value */
 
-	for (x = 0; x < 10; ++x)
+	while (x < 10)
 	{
-		for (y = 0; y < 10; ++y)
+		y = 0;
+		while (y < 10)
 		{
-			z = y * x;
-			if (y != 0)
+			z = x * y;
+
+			if (z > 9)
 			{
-				_putchar(',');
-				if (z < 10)
-				{
-					_putchar(' ');
-				}
-				_putchar(' ');
+				_putchar(z / 10 + '0');
+				_putchar(z % 10 + '0');
 			}
-			if (z < 10)
+			else if (y != 0)
 			{
+				_putchar(' ');
 				_putchar(z + '0');
 			}
 			else
 			{
-				tens = (z / 10);
-				ones = (z % 10);
-				_putchar(tens + '0');
-				_putchar(ones + '0');
+				_putchar(z + '0');
 			}
+
+			if (y != 9)
+			{
+				_putchar(',');
+				_putchar(' ');
+			}
+			y++;
 		}
 		_putchar('\n');
+		x++;
 	}
 }
