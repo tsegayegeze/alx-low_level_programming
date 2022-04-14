@@ -1,84 +1,54 @@
-#include "variadic_functions.h"
-#include <stdarg.h>
 #include <stdio.h>
-/**
- * chk_char - prints the char character
- * @list: the type
- * Return: nothing
- */
-void chk_char(va_list list)
-{
-	printf("%c", va_arg(list, int));
-}
-/**
- * chk_int - prints the int
- * @list: the type
- * Return: nothing
- */
-void chk_int(va_list list)
-{
-	printf("%i", va_arg(list, int));
-}
-/**
- * chk_float - prints the float
- * @list: the type
- * Return: nothing
- */
-void chk_float(va_list list)
-{
-	printf("%f", va_arg(list, double));
-}
-/**
- * chk_string - prints the string
- * @list: the type
- * Return: nothing
- */
-void chk_string(va_list list)
-{
-	char *str;
+#include <string.h>
+#include <stdarg.h>
+#include "variadic_functions.h"
 
-	str = va_arg(list, char *);
-	if (str == NULL)
-		str = "(nil)";
-
-	printf("%s", str);
-}
 /**
  * print_all - prints anything
- * @format: list of types of arguments passed to function
- * Return: nothing
- */
+ * @format:  variable type
+ * Return: Nothing
+**/
+
 void print_all(const char * const format, ...)
 {
-	check_t types[] = {
-		{"c", chk_char},
-		{"i", chk_int},
-		{"f", chk_float},
-		{"s", chk_string},
-		{NULL, NULL}
-	};
+unsigned int i = 0, j = 0;
+char *str;
+va_list ls;
+va_start(ls, format);
 
-	int x = 0, y = 0;
-	va_list list;
-	char *sep = "";
+while (format && format[i])
+{
+switch (format[i])
+{
+case 'c':
+printf("%c", va_arg(ls, int));
+break;
+case 'i':
+printf("%i", va_arg(ls, int));
+break;
+case 'f':
+printf("%f", va_arg(ls, double));
+break;
+case 's':
+str = va_arg(ls, char *);
+if (str == NULL)
+str = "(nil)";
 
-	va_start(list, format);
+printf("%s", str);
+break;
+}
+j = i + 1;
 
-	while (format && format[x])
-	{
-		while (types[y].chk)
-		{
-			if (format[x] == *types[y].chk)
-			{
-				printf("%s", sep);
-				types[y].f(list);
-				sep = ", ";
-			}
-			y++;
-		}
-		y = 0;
-		x++;
-	}
-	printf("\n");
-	va_end(list);
+while (format[j] && (format[j] == 'c' || format[j] == 'i' ||
+format[j] == 'f' || format[j] == 's'))
+{
+printf(", ");
+break;
+}
+
+i++;
+}
+printf("\n");
+va_end(ls);
+return;
 }
