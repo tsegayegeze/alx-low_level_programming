@@ -1,83 +1,91 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include "variadic_functions.h"
-/**
- * print_i - prints int
- * @list: arguement of list
- * @s: seperator
- * Return: none
- */
-void print_i(va_list list, char *s)
-{
-	printf("%s%d", s, va_arg(list, int));
-}
-/**
- * print_c - prints char
- * @list: arguement char
- * @sep: seperator
- */
-void print_c(va_list list, char *sep)
-{
-	printf("%s%c", sep, va_arg(list, int));
-}
-/**
- * print_s - prints string
- * @sep: seperator
- * @list: list to print
- * Return: none
- */
-void print_s(va_list list, char *sep)
-{
-	char *s;
 
-	s = va_arg(list, char *);
-	if (s == NULL)
-		s = "(nil)";
-	printf("%s%s", sep, s);
-}
 /**
- * print_f - prints floats
- * @sep: float to print
- * @list: next arguement of list to print
- * Return: none
+ * printChar - prints a char for args
+ * @ap: the arg
+ * Return: void
  */
-void print_f(va_list list, char *sep)
+void printChar(va_list ap)
 {
-	printf("%s%f", sep, va_arg(list, double));
+printf("%c", va_arg(ap, int));
+}
+
+/**
+ * printInt - prints an int for args
+ * @ap: the arg
+ * Return: void
+ */
+void printInt(va_list ap)
+{
+printf("%d", va_arg(ap, int));
+}
+
+/**
+ * printFloat - prints a float for args
+ * @ap: the arg
+ * Return: void
+ */
+void printFloat(va_list ap)
+{
+printf("%f", va_arg(ap, double));
+}
+
+/**
+ * printString - prints a string for args
+ * @ap: the arg
+ * Return: void
+ */
+void printString(va_list ap)
+{
+char *ch;
+ch = va_arg(ap, char *);
+if (ch == NULL)
+{
+printf("(nil)");
+return;
+}
+printf("%s", ch);
 }
 /**
- * print_all - prints out all stuff
- * @format: format is list of types of arguements
+ * print_all - prints all arguments
+ * @format: the format
+ * Return: void
  */
+
 void print_all(const char * const format, ...)
 {
-	va_list list;
-	char *sep;
 	int i, j;
-	fm_t fm[] = {
-		{"c", print_c},
-		{"i", print_i},
-		{"f", print_f},
-		{"s", print_s},
-		{NULL, NULL}
+	char *sep = "";
+	va_list obj;
+
+	form func[] = {
+		{"c", printChar},
+		{"i", printInt},
+		{"f", printFloat},
+		{"s", printString},
+		{NULL, NULL},
 	};
-	va_start(list, format);
-	i = 0;
-	sep = "";
-	while (format != NULL && format[i] != '\0')
+
+
+	va_start(obj, format);
+	for (i = 0; (format[i] && format); i++)
 	{
-		j = 0;
-		while (j < 4)
+		for (j = 0; (func[j].c); j++)
 		{
-			if (format[i] == *(fm[j]).fm)
+			if (format[i] == (*(func[j].c)))
 			{
-				fm[j].p(list, sep);
+				printf("%s", sep);
+				func[j].printTypef(obj);
 				sep = ", ";
 			}
-			j++;
 		}
-		i++;
+
 	}
+
+
+	va_end(obj);
 	printf("\n");
-	va_end(list);
 }
