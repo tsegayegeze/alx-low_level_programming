@@ -1,83 +1,79 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "variadic_functions.h"
+#include <stdlib.h>
+#include <stdio.h>
+
 /**
- * print_i - prints int
- * @list: arguement of list
- * @s: seperator
- * Return: none
+ * _printchar - print char type element from va_list
+ * @list: va_list passed to function
  */
-void print_i(va_list list, char *s)
+void _printchar(va_list list)
 {
-	printf("%s%d", s, va_arg(list, int));
+	printf("%c", va_arg(list, int));
 }
+
 /**
- * print_c - prints char
- * @list: arguement char
- * @sep: seperator
+ * _printstr - print string element from va_list
+ * @list: va_list passed to function
  */
-void print_c(va_list list, char *sep)
-{
-	printf("%s%c", sep, va_arg(list, int));
-}
-/**
- * print_s - prints string
- * @sep: seperator
- * @list: list to print
- * Return: none
- */
-void print_s(va_list list, char *sep)
+void _printstr(va_list list)
 {
 	char *s;
 
 	s = va_arg(list, char *);
 	if (s == NULL)
 		s = "(nil)";
-	printf("%s%s", sep, s);
+	printf("%s", s);
 }
+
 /**
- * print_f - prints floats
- * @sep: float to print
- * @list: next arguement of list to print
- * Return: none
+ * _printfloat - print float type element from va_list
+ * @list: va_list passed to function
  */
-void print_f(va_list list, char *sep)
+void _printfloat(va_list list)
 {
-	printf("%s%f", sep, va_arg(list, double));
+	printf("%f", va_arg(list, double));
 }
+
 /**
- * print_all - prints out all stuff
- * @format: format is list of types of arguements
+ * _printint - print int type element from va_list
+ * @list: va_list passed to function
+ */
+void _printint(va_list list)
+{
+	printf("%d", va_arg(list, int));
+}
+
+/**
+ * print_all - print anything passed if char, int, float, or string.
+ * @format: string of formats to use and print
  */
 void print_all(const char * const format, ...)
 {
-	va_list list;
+	unsigned int i, j;
+	va_list args;
 	char *sep;
-	int i, j;
-	fm_t fm[] = {
-		{"c", print_c},
-		{"i", print_i},
-		{"f", print_f},
-		{"s", print_s},
-		{NULL, NULL}
+
+	checker storage[] = {
+		{ "c", _printchar },
+		{ "f", _printfloat },
+		{ "s", _printstr },
+		{ "i", _printint }
 	};
-	va_start(list, format);
+
 	i = 0;
 	sep = "";
-	while (format != NULL && format[i] != '\0')
+	va_start(args, format);
+	while (format != NULL && format[i / 4] != '\0')
 	{
-		j = 0;
-		while (j < 4)
+		j = i % 4;
+		if (storage[j].type[0] == format[i / 4])
 		{
-			if (format[i] == *(fm[j]).fm)
-			{
-				fm[j].p(list, sep);
-				sep = ", ";
-			}
-			j++;
+			printf("%s", sep);
+			storage[j].f(args);
+			sep = ", ";
 		}
 		i++;
 	}
 	printf("\n");
-	va_end(list);
+	va_end(args);
 }
