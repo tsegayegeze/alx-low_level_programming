@@ -9,7 +9,7 @@
  * Return: Nothing
 **/
 
-void print_all(const char * const format, ...)
+void print_all(const char * const format, ...);
 {
 unsigned int i = 0, j = 0;
 char *str;
